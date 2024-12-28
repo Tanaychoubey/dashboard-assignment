@@ -1,6 +1,6 @@
 import { Order, Feedback, ActivityData } from '../types';
 
-const API_BASE_URL = 'http://localhost:5000/api';
+const API_BASE_URL = 'https://dashboard-assignment-server.onrender.com/api';
 
 class ApiError extends Error {
     constructor(message: string) {

@@ -15,7 +15,6 @@ const Dashboard: React.FC = () => {
     totalRevenue: number;
   } | null>(null);
   const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
     const fetchStats = async () => {
@@ -23,7 +22,7 @@ const Dashboard: React.FC = () => {
         const statsData = await api.fetchStats();
         setStats(statsData);
       } catch (err) {
-        setError('Failed to fetch stats');
+        console.error('Failed to fetch stats:', err);
       } finally {
         setLoading(false);
       }
@@ -32,8 +31,22 @@ const Dashboard: React.FC = () => {
     fetchStats();
   }, []);
 
-  if (loading) return <div className="text-white">Loading stats...</div>;
-  if (error) return <div className="text-red-500">{error}</div>;
+  if (loading) {
+    return (
+      <div className="flex items-center justify-center min-h-screen bg-gray-900">
+        <div className="w-12 h-12 border-4 border-blue-500 rounded-full animate-spin border-t-transparent"></div>
+      </div>
+    );
+  }
+
+  if (!stats) {
+    return (
+      <div className="flex items-center justify-center min-h-screen bg-gray-900 text-white">
+        <p className="text-xl">Failed to load dashboard data. Please try again later.</p>
+      </div>
+    );
+  }
+
   return (
     <div className="min-h-screen bg-gray-900 text-white p-6">
       <div className="max-w-7xl mx-auto">
@@ -92,3 +105,4 @@ const Dashboard: React.FC = () => {
 };
 
 export default Dashboard;
+
